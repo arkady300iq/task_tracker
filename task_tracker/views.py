@@ -94,7 +94,7 @@ def register(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('task_tracker:task-list')  # Убедитесь, что это правильно
+            return redirect('task_tracker:task-list')
     else:
         form = UserCreationForm()
     return render(request, 'task_tracker/register.html', {'form': form})
@@ -115,7 +115,7 @@ class CommentUpdateView(LoginRequiredMixin, UpdateView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['task'] = self.object.task  # Передаем задачу в контекст
+        context['task'] = self.object.task
         return context
 
 

@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class="container mt-3">
   <h2>Login</h2>
   <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Login</button>
-    <br>
-    <p>Don't have an account?</p>
-    <button type="submit"><a href="{% url 'task_tracker:register' %}">Register</a></button>
+    <button type="submit" class="btn btn-warning">Login</button>
+    <button type="submit" class="btn btn-primaгу"><a href="{% url 'task_tracker:register' %}">Register</a></button>
   </form>
+</div>
 {% endblock %}
