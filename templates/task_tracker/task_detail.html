@@ -8,5 +8,25 @@
     <p>Пріоритет: <span class="badge badge-secondary">{{ task.priority }}</span></p>
     <a href="{% url 'task_tracker:task-update' task.id %}" class="btn btn-warning">Редагувати</a>
     <a href="{% url 'task_tracker:task-delete' task.id %}" class="btn btn-danger">Видалити</a>
+    <h3>Комментарии</h3>
+    <ul>
+        {% for comment in comments %}
+            <li>{{ comment.author }}</li>
+            <li>{{ comment.created_at }}</li>
+            <li>{{ comment.content }}</li>
+            <li><a href="{% url 'task_tracker:comment-update' comment.pk %}" class="btn btn-warning">Редактировать</a>
+            <a href="{% url 'task_tracker:comment-delete' comment.pk %}" class="btn btn-danger">Удалить</a></li>
+
+            <br>
+        {% endfor %}
+    </ul>
+    <h3>Добавить комментарии</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{ comment_form.as_p }}
+        <button type="submit">Отправить</button>
+    </form>
 </div>
 {% endblock %}
+
+
