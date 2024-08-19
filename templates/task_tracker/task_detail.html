@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% load custom_tags %}
 <div class="container mt-3">
     <h2>{{ task.title }}</h2>
     <p>Descriotion: {{ task.description }}</p>
@@ -14,6 +15,22 @@
             <li>{{ comment.author }}</li>
             <li>{{ comment.created_at }}</li>
             <li>{{ comment.content }}</li>
+            {% if comment.media %}
+            <div class="comment-media">
+                {% with comment.media.url as media_url %}
+                    {% if media_url|slice:"-4:" == ".jpg" or media_url|slice:"-4:" == ".png" or media_url|slice:"-5:" == ".jpeg" %}
+                        <img src="{{ media_url }}" alt="Изображение комментария" style="max-width: 1000px;">
+                    {% elif media_url|slice:"-4:" == ".mp4" %}
+                        <video width="320" height="240" controls>
+                            <source src="{{ media_url }}" type="video/mp4">
+                            Ваш браузер не поддерживает тег видео.
+                        </video>
+                    {% else %}
+                        <a href="{{ media_url }}">Скачать файл</a>
+                    {% endif %}
+                {% endwith %}
+            </div>
+        {% endif %}        
             <li><a href="{% url 'task_tracker:comment-update' comment.pk %}" class="btn btn-warning">Edit</a>
             <a href="{% url 'task_tracker:comment-delete' comment.pk %}" class="btn btn-danger">Delete</a></li>
 
@@ -21,7 +38,7 @@
         {% endfor %}
     </ul>
     <h3>Add comment</h3>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ comment_form.as_p }}
         <button type="submit" class ="btn btn-warning">Submit</button>
